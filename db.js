@@ -10,15 +10,11 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    var sql = "CREATE TABLE shop_list (item VARCHAR(255), checked TINYINT(0))";
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Table created");
-    });
-
-    var sql = "INSERT INTO shop_list (item, checked) VALUES ('cereals', '0')";
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("1 record inserted");
-    });
 });
+
+con.query('SELECT * FROM shop_list', function(err, rows, fields) {
+    if (err) throw err;
+    console.log(rows);
+});
+
+con.end();
