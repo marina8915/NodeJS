@@ -1,20 +1,17 @@
-var mysql = require('mysql');
+const mongoose = require('mongoose')
 
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "myShopList"
-});
+const config = require('./config')
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
+mongoose.connect(config.mongoUrl, err => {
+  if (err) throw err
+})
 
-con.query('SELECT * FROM shop_list', function(err, rows, fields) {
-    if (err) throw err;
-    console.log(rows);
-});
+process.on('SIGINT', () => {
+  mongoose.disconnect()
+    .then(() => {
+      console.log('Disconnected')
+      process.exit()
+    })
+})
 
-con.end();
+module.exports = mongoose

@@ -1,29 +1,43 @@
-var express    = require("express");
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'root',
-    database : 'myShopList'
-});
-var app = express();
+const express = require('express')
+const bodyParser = require('body-parser')
 
-connection.connect(function(err){
-    if(!err) {
-        console.log("Database is connected ... \n\n");
-    } else {
-        console.log("Error connecting database ... \n\n");
-    }
-});
+const app = express()
 
-app.get("/",function(req,res){
-    connection.query('SELECT * from shop_list', function(err, rows, fields) {
-        connection.end();
-        if (!err)
-            console.log('The solution is: ', rows);
-        else
-            console.log('Error while performing Query.');
-    });
-});
+const config = require('./config')
+const todo = require('./shopList/todo')
 
-//app.listen(3000);
+require('./db')
+
+app.listen(config.port, () => {
+  console.log(`Server running at port: ${config.port}`)
+})
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+app.use(bodyParser.json())
+
+app.use('/api/v1', todo)
+
+// error handling
+app.use((req, res, next) => {
+  const err = new Error(`Not Found ${req.path}`)
+  err.status = 404
+  next(err)
+})
+app.use((error, req, res, next) => {
+  if (error) {
+    console.log(error)
+    return res.status(400).json({error})
+  }
+  next(error)
+})
+app.use((err, req, res, next) => {
+  res.status(err.status || 500)
+  res.render('error', {
+    message: err.message,
+    error: {}
+  })
+})
+
+module.exports = app
