@@ -32,4 +32,13 @@ router.delete('/todo/:id', function (req, res) {
   })
 })
 
+router.post('/todo', (req, res, next) => {
+    new Todo(req.body.todo)
+        .save()
+        .then(todo => {
+        res.json({todo})
+        })
+    .catch(next)
+})
+
 module.exports = router
