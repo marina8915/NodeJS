@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 
-const todoSchema = new mongoose.Schema({
-    text: String,
-    complete: Boolean
+const shopListSchema = new mongoose.Schema({
+    text: String
 })
 
-module.exports = mongoose.model('Todo', todoSchema)
+module.exports = mongoose.model('Todo', shopListSchema)

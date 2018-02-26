@@ -33,12 +33,24 @@ router.delete('/todo/:id', function (req, res) {
 })
 
 router.post('/todo', (req, res, next) => {
+
     new Todo(req.body.todo)
         .save()
         .then(todo => {
         res.json({todo})
-        })
-    .catch(next)
+})
+.catch(next)
+})
+
+router.put('/todo/:id', function (req, res) {
+    Todo.findOneAndUpdate({ "_id": req.params.id}, {
+        text: req.body.todo.text
+    }, { new: true }, function (err, doc) {
+        if (err) {
+            res.status(400).json(err)
+        }
+        res.status(200).json(doc)
+    })
 })
 
 module.exports = router
