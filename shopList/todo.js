@@ -33,13 +33,15 @@ router.delete('/todo/:id', function (req, res) {
 })
 
 router.post('/todo', (req, res, next) => {
-
-    new Todo(req.body.todo)
-        .save()
-        .then(todo => {
-        res.json({todo})
-})
-.catch(next)
+    let newTodo = new Todo(req.body.todo)
+        if (req.body.todo.text !== ''){
+            newTodo.save()
+            .then(todo => {
+            res.json({todo})
+            })
+        } else {
+            res.json("Field text is empty!")
+        }
 })
 
 router.put('/todo/:id', function (req, res) {
