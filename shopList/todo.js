@@ -34,19 +34,20 @@ router.delete('/todo/:id', function (req, res) {
 
 router.post('/todo', (req, res, next) => {
     let newTodo = new Todo(req.body.todo)
-        if (req.body.todo.text !== ''){
+        if (req.body.todo.text !== '' && req.body.todo.text){
             newTodo.save()
             .then(todo => {
             res.json({todo})
             })
         } else {
-            res.json("Field text is empty!")
+            res.json({success: false, message: 'Field text is empty!'})
         }
 })
 
 router.put('/todo/:id', function (req, res) {
+    let defaultText = "text"
     Todo.findOneAndUpdate({ "_id": req.params.id}, {
-        text: req.body.todo.text
+        text: req.body.todo.text || defaultText
     }, { new: true }, function (err, doc) {
         if (err) {
             res.status(400).json(err)
