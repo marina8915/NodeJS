@@ -19,7 +19,6 @@ app.use(bodyParser.json())
 
 app.use('/api/v1', todo)
 
-
 // error handling
 app.use((req, res, next) => {
   const err = new Error(`Not Found ${req.path}`)
