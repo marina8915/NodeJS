@@ -8,4 +8,11 @@ Types of requests: GET, POST, PUT, DELETE.
 
 npm i 
 
+###Start server with nodemon 
+
 npm run server
+
+
+###To start project
+
+npm start
