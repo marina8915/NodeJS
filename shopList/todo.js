@@ -56,15 +56,17 @@ router.post('/todo', function (req, res, next) {
 //put todo by id
 router.put('/todo/:id', function (req, res) {
     // if text is empty then text = defaultText
-    let defaultText = "text"
-    let defaultUrl = "radiant-basin-31635.herokuapp.com"
-    let defaultDate = "10.03.18"
-    let defaultComplete = true
+    let defaultValues = {
+        defaultText: "text",
+        defaultUrl: "radiant-basin-31635.herokuapp.com",
+        defaultDate: "10.03.18",
+        defaultComplete: true
+    }
     Todo.findOneAndUpdate({"_id": req.params.id}, {
-        text: req.body.todo.text || defaultText,
-        url: req.body.todo.url || defaultUrl,
-        date: req.body.todo.date || defaultDate,
-        complete: req.body.todo.complete || defaultComplete
+        text: req.body.todo.text || defaultValues.defaultText,
+        url: req.body.todo.url || defaultValues.defaultUrl,
+        date: req.body.todo.date || defaultValues.defaultDate,
+        complete: req.body.todo.complete || defaultValues.defaultComplete
     }, {new: true}, function (err, doc) {
         if (err) {
             res.status(400).json(err)
