@@ -39,14 +39,17 @@ router.delete('/todo/:id', function (req, res) {
 //post new todo
 router.post('/todo', function (req, res, next) {
     let newTodo = new Todo(req.body.todo)
-    //check if field text not empty and exist
-    if (req.body.todo.text !== '' && req.body.todo.text) {
+    //check if fields not empty and exist
+    if (req.body.todo.text !== '' && req.body.todo.text &&
+        req.body.todo.url !== '' && req.body.todo.url &&
+        req.body.todo.date !== '' && req.body.todo.date &&
+        req.body.todo.complete) {
         newTodo.save()
             .then(function (todo) {
                 res.json({todo})
             })
     } else {
-        res.json({success: false, message: 'Field text is empty!'})
+        res.json({success: false, message: 'Some field is empty!'})
     }
 })
 
@@ -54,8 +57,14 @@ router.post('/todo', function (req, res, next) {
 router.put('/todo/:id', function (req, res) {
     // if text is empty then text = defaultText
     let defaultText = "text"
+    let defaultUrl = "radiant-basin-31635.herokuapp.com"
+    let defaultDate = "10.03.18"
+    let defaultComplete = true
     Todo.findOneAndUpdate({"_id": req.params.id}, {
-        text: req.body.todo.text || defaultText
+        text: req.body.todo.text || defaultText,
+        url: req.body.todo.url || defaultUrl,
+        date: req.body.todo.date || defaultDate,
+        complete: req.body.todo.complete || defaultComplete
     }, {new: true}, function (err, doc) {
         if (err) {
             res.status(400).json(err)
