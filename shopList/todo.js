@@ -49,7 +49,7 @@ router.post('/todo', function (req, res, next) {
                 res.json({todo})
             })
     } else {
-        res.json({success: false, message: 'Some field is empty!'})
+        res.json({success: false, message: 'Some field is empty!', status: 401})
     }
 })
 
